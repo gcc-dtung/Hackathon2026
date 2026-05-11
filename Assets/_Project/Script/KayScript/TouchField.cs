@@ -9,7 +9,7 @@ public class TouchField : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (_pointerId != -1) return; // Chỉ nhận 1 ngón tay cho vùng này
+        if (_pointerId != -1) return;
         _pointerId = eventData.pointerId;
         _lastPosition = eventData.position;
         TouchDelta = Vector2.zero;
@@ -35,7 +35,6 @@ public class TouchField : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     private void LateUpdate()
     {
-        // Reset giá trị vuốt mỗi frame để tránh bị trôi camera
         TouchDelta = Vector2.zero;
     }
 }
