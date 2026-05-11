@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Look Settings")]
     [SerializeField] private Transform playerCamera;
     [SerializeField] private float lookSensitivity = 0.2f;
+    [SerializeField] private float gamepadLookSensitivity = 150f;
     [SerializeField] private float topClamp = -89f;
     [SerializeField] private float bottomClamp = 89f;
     [SerializeField] private TouchField touchField;
@@ -95,29 +96,47 @@ public class PlayerMovement : MonoBehaviour
     {
         if (playerCamera != null)
         {
-            if (touchField != null)
+            float lookX = 0f;
+            float lookY = 0f;
+
+            // 1. Kiểm tra TouchField (Mobile / Touch)
+            if (touchField != null && touchField.TouchDelta.sqrMagnitude > 0.001f)
             {
-                // Ưu tiên dùng TouchField nếu có
-                _lookInput = touchField.TouchDelta;
-            }
-            else if (lookAction != null)
-            {
-                _lookInput = lookAction.action.ReadValue<Vector2>();
-            }
-            else
-            {
-                _lookInput = Vector2.zero;
+                lookX += touchField.TouchDelta.x * lookSensitivity;
+                lookY += touchField.TouchDelta.y * lookSensitivity;
             }
 
-            float mouseX = _lookInput.x * lookSensitivity;
-            float mouseY = _lookInput.y * lookSensitivity;
+            // 2. Kiểm tra Look Action (Gamepad / Mouse)
+            if (lookAction != null)
+            {
+                Vector2 lookValue = lookAction.action.ReadValue<Vector2>();
+                if (lookValue.sqrMagnitude > 0.001f)
+                {
+                    // Kiểm tra xem input có phải từ Gamepad không
+                    bool isGamepad = lookAction.action.activeControl != null && 
+                                     lookAction.action.activeControl.device is Gamepad;
 
-            _xRotation -= mouseY;
+                    if (isGamepad)
+                    {
+                        // Joystick tay cầm trả về giá trị (-1 đến 1), cần nhân với Sensitivity riêng và deltaTime
+                        lookX += lookValue.x * gamepadLookSensitivity * Time.deltaTime;
+                        lookY += lookValue.y * gamepadLookSensitivity * Time.deltaTime;
+                    }
+                    else if (touchField == null) // Chỉ dùng chuột nếu không có TouchField
+                    {
+                        // Chuột trả về delta pixel, dùng chung lookSensitivity
+                        lookX += lookValue.x * lookSensitivity;
+                        lookY += lookValue.y * lookSensitivity;
+                    }
+                }
+            }
+
+            _xRotation -= lookY;
             _xRotation = Mathf.Clamp(_xRotation, topClamp, bottomClamp);
 
             playerCamera.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
             
-            transform.Rotate(Vector3.up * mouseX);
+            transform.Rotate(Vector3.up * lookX);
         }
     }
 }

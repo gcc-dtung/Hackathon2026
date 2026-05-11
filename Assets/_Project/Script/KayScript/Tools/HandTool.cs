@@ -1,25 +1,20 @@
-using KayScript.Interaction;
-using KayScript.Inventory;
 using UnityEngine;
 
-namespace KayScript.Tools
+public class HandTool : MonoBehaviour, ITool
 {
-    public class HandTool : MonoBehaviour, ITool
+    public string ToolName => "Hand";
+
+    public bool CanInteract(IHarvestable target)
     {
-        public string ToolName => "Hand";
+        return target.Category == HarvestCategory.Trash;
+    }
 
-        public bool CanInteract(IHarvestable target)
+    public void Interact(IHarvestable target)
+    {
+        if (CanInteract(target))
         {
-            return target.Category == HarvestCategory.Trash;
-        }
-
-        public void Interact(IHarvestable target)
-        {
-            if (CanInteract(target))
-            {
-                Backpack.Instance.AddItem(target.ResourceType, target.HarvestAmount);
-                target.OnHarvested();
-            }
+            Backpack.Instance.AddItem(target.ResourceType, target.HarvestAmount);
+            target.OnHarvested();
         }
     }
 }

@@ -1,15 +1,15 @@
-namespace KayScript.Inventory
+public enum ResourceType
 {
-    public enum ResourceType
-    {
-        // Trash subtypes
-        Steel,
-        Paper,
-        Plastic,
-        Glass,
-        Can,
-        // Natural resources
-        Wood,
-        Stone
-    }
+    // Trash subtypes
+    Steel,
+    Paper,
+    Plastic,
+    Glass,
+    Can,
+    // Natural resources
+    Wood,
+    Stone,
+    // Purchasable items
+    Seed,
+    OxygenTank
 }

@@ -1,9 +1,6 @@
-namespace KayScript.Interaction
+public enum HarvestCategory
 {
-    public enum HarvestCategory
-    {
-        Trash,
-        Tree,
-        Rock
-    }
+    Trash,
+    Tree,
+    Rock
 }

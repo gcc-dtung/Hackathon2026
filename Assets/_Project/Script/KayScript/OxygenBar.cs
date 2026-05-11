@@ -4,24 +4,54 @@ using UnityEngine.UI;
 public class OxygenBar : MonoBehaviour
 {
     [SerializeField] private float maxOxygen = 100f;
-    [SerializeField] private float oxygenPerSecond = 10f;
-    [SerializeField] private Image oxygenBar;
+        [SerializeField] private float baseDepletionRate = 10f;
+        [SerializeField] private float reductionFactor = 0.15f; // How much each tree slows depletion
+        [SerializeField] private Image oxygenBar;
 
-    private float _oxygen;
+        public event System.Action OnOxygenDepleted;
+        public event System.Action<float, float> OnOxygenChanged;
 
-    void Start()
-    {
-        _oxygen = maxOxygen;
-    }
+        private float _oxygen;
 
-    void Update()
-    {
-        _oxygen -= oxygenPerSecond * Time.deltaTime;
+        void Start()
+        {
+            _oxygen = maxOxygen;
+        }
+
+        void Update()
+        {
+            float treeCount = 0;
+            if (TreeManager.Instance != null)
+            {
+                treeCount = TreeManager.Instance.TreeCount;
+            }
+
+            // Formula: actualRate = baseRate / (1 + treeCount * reductionFactor)
+            float actualDepletionRate = baseDepletionRate / (1f + (treeCount * reductionFactor));
+            
+            _oxygen -= actualDepletionRate * Time.deltaTime;
+            _oxygen = Mathf.Clamp(_oxygen, 0, maxOxygen);
+            
+            OnOxygenChanged?.Invoke(_oxygen, maxOxygen);
+
+            if (_oxygen <= 0)
+            {
+                OnOxygenDepleted?.Invoke();
+            }
+        }
+        
+        void FixedUpdate()
+        {
+            if (oxygenBar != null)
+            {
+                oxygenBar.fillAmount = _oxygen / maxOxygen;
+            }
+        }
+
+        public void AddOxygen(float amount)
+        {
+            _oxygen += amount;
+            _oxygen = Mathf.Clamp(_oxygen, 0, maxOxygen);
+            OnOxygenChanged?.Invoke(_oxygen, maxOxygen);
+        }
     }
-    void FixedUpdate()
-    {
-        oxygenBar.fillAmount = _oxygen / maxOxygen;
-        if(_oxygen <= 0){}
-        //TODO: Die method
-    }
-}

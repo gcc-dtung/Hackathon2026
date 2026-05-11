@@ -1,0 +1,39 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class GameOverUI : Singleton<GameOverUI>
+{
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private Button retryButton;
+
+    private void Start()
+    {
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(false);
+        }
+
+        if (retryButton != null)
+        {
+            retryButton.onClick.AddListener(RestartGame);
+        }
+    }
+
+    public void ShowGameOver()
+    {
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+            // Unlock cursor if it was locked
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
+    private void RestartGame()
+    {
+        // Reload the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+}
