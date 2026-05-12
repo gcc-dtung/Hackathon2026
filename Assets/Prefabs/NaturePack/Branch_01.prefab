@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6974206499300167450}
   - component: {fileID: 5551132972293898651}
   - component: {fileID: 8606772920020711899}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Branch_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,9 +28,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2557545878755852893}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.410896, y: 3.300091, z: -5.6977386}
-  m_LocalScale: {x: 2.521781, y: 2.521781, z: 2.521781}
+  m_LocalScale: {x: 3.725427, y: 3.7254272, z: 3.725427}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -107,13 +107,13 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 5528351815fd4c04abf537f22c7e18f1, type: 3}
+  m_Mesh: {fileID: 4300000, guid: a404526a8bc8d104580abd019b737641, type: 3}
 --- !u!114 &8606772920020711899
 MonoBehaviour:
   m_ObjectHideFlags: 0
