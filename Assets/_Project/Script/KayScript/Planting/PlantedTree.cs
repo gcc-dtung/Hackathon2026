@@ -7,7 +7,7 @@ public enum TreeState
     Mature
 }
 
-public class PlantedTree : MonoBehaviour
+public class PlantedTree : MonoBehaviour, IHarvestable
 {
     [Header("Growth Settings")]
     [SerializeField] private float growthTimeSeconds = 60f;
@@ -22,6 +22,20 @@ public class PlantedTree : MonoBehaviour
     private TreeState _state = TreeState.Sapling;
 
     public TreeState State => _state;
+
+    // IHarvestable implementation
+    public HarvestCategory Category => _state == TreeState.Mature ? HarvestCategory.Tree : HarvestCategory.None;
+    public ResourceType ResourceType => ResourceType.Wood;
+    public int HarvestAmount => 3; // Mặc định trả về 3 gỗ khi trưởng thành
+
+    public void OnHarvested()
+    {
+        if (_state == TreeState.Mature)
+        {
+            // Chopping the tree instantly kills it
+            TakeDamage(_health);
+        }
+    }
 
     private void Start()
     {
