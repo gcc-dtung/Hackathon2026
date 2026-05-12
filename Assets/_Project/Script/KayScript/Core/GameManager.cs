@@ -64,8 +64,9 @@ public class GameManager : Singleton<GameManager>
         }
     }
     
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         Time.timeScale = 1f; // Reset time scale on destroy to avoid freezing next loaded scene
     }
 }

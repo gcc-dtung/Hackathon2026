@@ -20,8 +20,9 @@ public class WeatherManager : Singleton<WeatherManager>
         }
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         if (DayCycleManager.Instance != null)
         {
             DayCycleManager.Instance.OnNewDay -= HandleNewDay;
