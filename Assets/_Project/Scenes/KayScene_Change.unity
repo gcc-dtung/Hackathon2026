@@ -11616,7 +11616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OxygenBar
   maxOxygen: 100
-  baseDepletionRate: 0.1
+  baseDepletionRate: 2
   reductionFactor: 0.15
   oxygenBar: {fileID: 502768585}
 --- !u!1001 &504571031
@@ -14346,7 +14346,7 @@ GameObject:
   - component: {fileID: 623204136}
   - component: {fileID: 623204135}
   - component: {fileID: 623204134}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14852,7 +14852,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverUI
   gameOverPanel: {fileID: 722327422}
   retryButton: {fileID: 1330325537}
-  oxygenBar: {fileID: 0}
 --- !u!1 &639779295
 GameObject:
   m_ObjectHideFlags: 0
@@ -56340,6 +56339,7 @@ GameObject:
   - component: {fileID: 1873353077}
   - component: {fileID: 1873353079}
   - component: {fileID: 1873353078}
+  - component: {fileID: 1873353080}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -56436,7 +56436,7 @@ Transform:
   m_GameObject: {fileID: 1873353068}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.35, z: 0}
+  m_LocalPosition: {x: 79.2, y: -37.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -56541,6 +56541,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   oxygenBar: {fileID: 502768587}
+--- !u!114 &1873353080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873353068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed2ba5266f98e245a80b0a13a233f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeedPlacer
+  treePrefab: {fileID: 0}
+  playerCamera: {fileID: 0}
+  placeRange: 4
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &1882172071 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8873904263511828354, guid: b3a5b6119447fe443a3370463f800a83, type: 3}
@@ -61152,7 +61170,7 @@ Transform:
   m_GameObject: {fileID: 2120928088}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.86, y: 2.5, z: 12.19}
+  m_LocalPosition: {x: 78.5, y: -36.48, z: 15.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

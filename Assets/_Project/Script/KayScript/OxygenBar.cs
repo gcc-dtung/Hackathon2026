@@ -9,10 +9,27 @@ public class OxygenBar : MonoBehaviour
     [SerializeField] private Image oxygenBar;
 
     public event System.Action OnOxygenDepleted;
+
     public event System.Action<float, float> OnOxygenChanged;
 
     private float _oxygen;
+    private System.Action _loseAction;
 
+    void OnEnable()
+    {
+        _loseAction = () => {
+            if (GameOverUI.Instance != null) GameOverUI.Instance.ShowGameOver();
+        };
+        OnOxygenDepleted += _loseAction;
+    }
+
+    void OnDisable()
+    {
+        if (_loseAction != null)
+        {
+            OnOxygenDepleted -= _loseAction;
+        }
+    }
 
     void Start()
     {
