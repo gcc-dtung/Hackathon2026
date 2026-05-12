@@ -9,17 +9,16 @@ public class OxygenTank : MonoBehaviour
     {
         if (Backpack.Instance == null) return;
 
+        if (oxygenBar == null)
+        {
+            oxygenBar = FindFirstObjectByType<OxygenBar>();
+        }
+
+        if (oxygenBar == null || oxygenBar.IsFull) return;
+
         if (Backpack.Instance.RemoveItem(ResourceType.OxygenTank, 1))
         {
-            if (oxygenBar == null)
-            {
-                oxygenBar = FindFirstObjectByType<OxygenBar>();
-            }
-            
-            if (oxygenBar != null)
-            {
-                oxygenBar.AddOxygen(restoreAmount);
-            }
+            oxygenBar.AddOxygen(restoreAmount);
         }
     }
 }

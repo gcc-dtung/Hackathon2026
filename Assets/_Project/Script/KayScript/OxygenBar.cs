@@ -10,6 +10,7 @@ public class OxygenBar : MonoBehaviour
 
     public event System.Action OnOxygenDepleted;
     public event System.Action<float, float> OnOxygenChanged;
+    public bool IsFull => _oxygen >= maxOxygen;
 
     private float _oxygen;
 

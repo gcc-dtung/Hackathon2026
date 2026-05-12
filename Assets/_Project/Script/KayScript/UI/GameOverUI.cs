@@ -11,7 +11,15 @@ public class GameOverUI : Singleton<GameOverUI>
 
     void OnEnable()
     {
-        oxygenBar.OnOxygenDepleted += ShowGameOver;
+        if (oxygenBar == null)
+        {
+            oxygenBar = FindFirstObjectByType<OxygenBar>();
+        }
+
+        if (oxygenBar != null)
+        {
+            oxygenBar.OnOxygenDepleted += ShowGameOver;
+        }
     }
 
     private void Start()
@@ -28,7 +36,10 @@ public class GameOverUI : Singleton<GameOverUI>
     }
     void OnDisable()
     {
-        oxygenBar.OnOxygenDepleted -= ShowGameOver;
+        if (oxygenBar != null)
+        {
+            oxygenBar.OnOxygenDepleted -= ShowGameOver;
+        }
     }
 
     public void ShowGameOver()

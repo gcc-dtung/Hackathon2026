@@ -37,6 +37,7 @@ public class InventoryGridUI : MonoBehaviour
 
     private Dictionary<ResourceType, InventorySlot> _slotMap = new Dictionary<ResourceType, InventorySlot>();
     private Dictionary<ResourceType, Sprite> _iconCache = new Dictionary<ResourceType, Sprite>();
+    private bool _isSubscribed;
 
     private void Start()
     {
@@ -55,22 +56,42 @@ public class InventoryGridUI : MonoBehaviour
 
         CacheIcons();
         InitializeGrid();
+        SubscribeToBackpack();
+        UpdateGrid();
+    }
 
-        if (Backpack.Instance != null)
-        {
-            Backpack.Instance.OnInventoryChanged += HandleInventoryChanged;
-            UpdateGrid();
-        }
+    private void OnEnable()
+    {
+        SubscribeToBackpack();
+        UpdateGrid();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeFromBackpack();
     }
 
     private void OnDestroy()
     {
-        if (Backpack.Instance != null)
-        {
-            Backpack.Instance.OnInventoryChanged -= HandleInventoryChanged;
-        }
+        UnsubscribeFromBackpack();
         if (openButton != null) openButton.onClick.RemoveListener(OpenInventory);
         if (closeButton != null) closeButton.onClick.RemoveListener(CloseInventory);
+    }
+
+    private void SubscribeToBackpack()
+    {
+        if (_isSubscribed || Backpack.Instance == null) return;
+
+        Backpack.Instance.OnInventoryChanged += HandleInventoryChanged;
+        _isSubscribed = true;
+    }
+
+    private void UnsubscribeFromBackpack()
+    {
+        if (!_isSubscribed || Backpack.Instance == null) return;
+
+        Backpack.Instance.OnInventoryChanged -= HandleInventoryChanged;
+        _isSubscribed = false;
     }
 
     public bool IsInventoryOpen()

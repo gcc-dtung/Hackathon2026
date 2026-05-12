@@ -165,7 +165,7 @@ public class HoldInteraction : MonoBehaviour
         Ray ray = playerCamera.ScreenPointToRay(screenPosition);
         if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactableLayer))
         {
-            _currentTarget = hit.collider.GetComponent<IHarvestable>();
+            _currentTarget = hit.collider.GetComponentInParent<IHarvestable>();
         }
     }
 

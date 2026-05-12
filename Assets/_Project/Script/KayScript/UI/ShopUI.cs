@@ -59,10 +59,7 @@ public class ShopUI : Singleton<ShopUI>
 
     public void OpenShop()
     {
-        if (!_isPopulated)
-        {
-            PopulateShop();
-        }
+        PopulateShop();
 
         _isShopOpen = true;
         if (shopPanel != null) shopPanel.SetActive(true);

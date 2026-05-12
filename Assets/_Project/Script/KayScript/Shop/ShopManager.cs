@@ -8,6 +8,46 @@ public class ShopManager : Singleton<ShopManager>
 
     public List<ShopItemData> AvailableItems => availableItems;
 
+    private ToolSelector CurrentToolSelector
+    {
+        get
+        {
+            if (toolSelector == null)
+            {
+                toolSelector = FindFirstObjectByType<ToolSelector>();
+            }
+
+            return toolSelector;
+        }
+    }
+
+    public int GetOwnedToolCount(int toolIndex)
+    {
+        ToolSelector selector = CurrentToolSelector;
+        if (selector == null) return 0;
+        return selector.IsToolUnlocked(toolIndex) ? 1 : 0;
+    }
+
+    public int GetOwnedItemCount(ShopItemData itemData)
+    {
+        if (itemData == null) return 0;
+
+        if (itemData.category == ItemCategory.Tool)
+        {
+            return GetOwnedToolCount(itemData.toolIndex);
+        }
+
+        if (Backpack.Instance == null) return 0;
+        return Backpack.Instance.GetItemCount(itemData.resourceType);
+    }
+
+    public int GetToolPurchaseLimit(ShopItemData itemData)
+    {
+        if (itemData == null) return 0;
+        if (itemData.purchaseLimit > 0) return itemData.purchaseLimit;
+        return itemData.category == ItemCategory.Tool ? 1 : 0;
+    }
+
     public bool SellItem(ShopItemData itemData)
     {
         if (itemData.action != ShopAction.Sell) return false;
@@ -28,6 +68,7 @@ public class ShopManager : Singleton<ShopManager>
     public bool BuyItem(ShopItemData itemData)
     {
         if (itemData.action != ShopAction.Buy) return false;
+        if (CurrencyManager.Instance == null || Backpack.Instance == null) return false;
 
         if (CurrencyManager.Instance.Coins >= itemData.price)
         {
@@ -47,11 +88,12 @@ public class ShopManager : Singleton<ShopManager>
             }
             else if (itemData.category == ItemCategory.Tool)
             {
-                if (toolSelector != null && !toolSelector.IsToolUnlocked(itemData.toolIndex))
+                ToolSelector selector = CurrentToolSelector;
+                if (selector != null && !selector.IsToolUnlocked(itemData.toolIndex))
                 {
                     if (CurrencyManager.Instance.SpendCoins(itemData.price))
                     {
-                        toolSelector.UnlockTool(itemData.toolIndex);
+                        selector.UnlockTool(itemData.toolIndex);
                         return true;
                     }
                 }

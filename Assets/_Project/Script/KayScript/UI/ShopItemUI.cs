@@ -91,10 +91,10 @@ public class ShopItemUI : MonoBehaviour
     public void SetItem(ShopItemData itemData)
     {
         _itemData = itemData;
+        ResetTextDirection();
 
         if (iconImage != null && itemData.icon != null) iconImage.sprite = itemData.icon;
-        if (nameText != null) nameText.text = itemData.itemName;
-        if (priceText != null) priceText.text = $"{itemData.price} Coins";
+        UpdateItemText();
         
         if (buttonText != null)
         {
@@ -126,12 +126,58 @@ public class ShopItemUI : MonoBehaviour
         }
 
         ShowFeedback(success);
+        if (success)
+        {
+            UpdateItemText();
+        }
     }
 
-    /// <summary>Gọi từ GamepadUIController để thực hiện mua/bán.</summary>
+    private void UpdateItemText()
+    {
+        if (_itemData == null) return;
+
+        if (nameText != null)
+        {
+            nameText.text = GetDisplayName();
+        }
+
+        if (priceText != null)
+        {
+            priceText.text = _itemData.price.ToString();
+        }
+    }
+
+    private void ResetTextDirection()
+    {
+        TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>(true);
+        foreach (TextMeshProUGUI text in texts)
+        {
+            text.isRightToLeftText = false;
+            text.rectTransform.localRotation = Quaternion.identity;
+        }
+    }
+
+    private string GetDisplayName()
+    {
+        if (ShopManager.Instance == null)
+        {
+            return _itemData.itemName;
+        }
+
+        int purchaseLimit = ShopManager.Instance.GetToolPurchaseLimit(_itemData);
+        if (purchaseLimit <= 0)
+        {
+            return _itemData.itemName;
+        }
+
+        int ownedCount = ShopManager.Instance.GetOwnedItemCount(_itemData);
+        return $"{_itemData.itemName} ({ownedCount}/{purchaseLimit})";
+    }
+
+    /// <summary>Called by GamepadUIController to buy or sell the selected item.</summary>
     public void TriggerAction() => OnActionButtonClicked();
 
-    /// <summary>Bật/tắt highlight khi navigate bằng gamepad.</summary>
+    /// <summary>Turns highlight on or off during gamepad navigation.</summary>
     public void SetHighlight(bool highlighted)
     {
         if (bgImage == null) return;

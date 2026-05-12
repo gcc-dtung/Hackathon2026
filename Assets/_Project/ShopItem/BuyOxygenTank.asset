@@ -17,5 +17,6 @@ MonoBehaviour:
   price: 20
   action: 0
   category: 1
+  purchaseLimit: 0
   resourceType: 8
   toolIndex: 0

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3618809973548255396}
   - component: {fileID: 2046112522634952824}
   - component: {fileID: 6066083869613921322}
-  - component: {fileID: 7038247115073682623}
-  m_Layer: 0
+  - component: {fileID: 1227301587383223110}
+  m_Layer: 6
   m_Name: Rock_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,8 +113,8 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 3a775dc2c1a334b45a5667a56fe92c23, type: 3}
---- !u!114 &7038247115073682623
+  m_Mesh: {fileID: 4300000, guid: bdce019deff5c9d4aa173f36ba025b5f, type: 3}
+--- !u!114 &1227301587383223110
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,7 +123,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1016956100494546586}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08e5b074de52b8a499f2d3cac94a4e1c, type: 3}
+  m_Script: {fileID: 11500000, guid: 449061e34cd52ee47a7141e8707f42a6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RockObject
-  harvestAmount: 5
+  m_EditorClassIdentifier: Assembly-CSharp::TrashObject
+  trashType: 6
+  harvestAmount: 1
+  highlightColor: {r: 1, g: 0.85, b: 0.35, a: 1}
