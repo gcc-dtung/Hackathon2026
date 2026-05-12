@@ -84,8 +84,11 @@ public class SeedPlacer : MonoBehaviour
                 PlantedTree newTree = Instantiate(treePrefab, hit.point, Quaternion.identity);
                 Debug.Log($"Đã trồng cây tại {hit.point}");
                 
-                // Tự động tắt planting mode sau khi trồng
-                _isPlantingMode = false;
+                // Không tự động tắt planting mode nếu vẫn còn hạt giống
+                if (!Backpack.Instance.HasItem(ResourceType.Seed, 1))
+                {
+                    _isPlantingMode = false;
+                }
             }
         }
     }

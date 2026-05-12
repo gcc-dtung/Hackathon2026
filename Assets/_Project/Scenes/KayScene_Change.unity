@@ -11616,7 +11616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OxygenBar
   maxOxygen: 100
-  baseDepletionRate: 2
+  baseDepletionRate: 0.1
   reductionFactor: 0.15
   oxygenBar: {fileID: 502768585}
 --- !u!1001 &504571031
@@ -28717,6 +28717,7 @@ GameObject:
   - component: {fileID: 1057303468}
   - component: {fileID: 1057303467}
   - component: {fileID: 1057303466}
+  - component: {fileID: 1057303469}
   m_Layer: 5
   m_Name: Plan Tree
   m_TagString: Untagged
@@ -28787,7 +28788,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1057303467}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1873353080}
+        m_TargetAssemblyTypeName: SeedPlacer, Assembly-CSharp
+        m_MethodName: TogglePlantingMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1057303467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28826,6 +28839,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057303464}
   m_CullTransparentMesh: 1
+--- !u!114 &1057303469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057303464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd685fecd216bf4dbf91df35b8e009d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantingButtonUI
+  seedPlacer: {fileID: 1873353080}
+  buttonImage: {fileID: 1057303467}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  activeColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1001 &1060783037
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56553,12 +56582,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ed2ba5266f98e245a80b0a13a233f0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedPlacer
-  treePrefab: {fileID: 0}
-  playerCamera: {fileID: 0}
-  placeRange: 4
+  treePrefab: {fileID: 3428124717242741227, guid: f569c4db995f9bc4aaef04a95f2edb36, type: 3}
+  playerCamera: {fileID: 722860345}
+  placeRange: 10
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
 --- !u!4 &1882172071 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8873904263511828354, guid: b3a5b6119447fe443a3370463f800a83, type: 3}
