@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 public class HoldInteraction : MonoBehaviour
@@ -8,11 +9,15 @@ public class HoldInteraction : MonoBehaviour
     [SerializeField] private float holdDuration = 1.5f;
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private float dragThreshold = 10f; // in pixels
+
     [SerializeField] private LayerMask interactableLayer;
 
     [Header("References")]
     [SerializeField] private ToolSelector toolSelector;
     [SerializeField] private Camera playerCamera;
+
+    [Header("Input Reference")]
+    [SerializeField] private InputActionReference interactAction;
 
     public event System.Action<float> OnHoldProgress;
     public event System.Action OnInteractionComplete;
@@ -22,28 +27,69 @@ public class HoldInteraction : MonoBehaviour
     private Vector2 _startTouchPosition;
     private IHarvestable _currentTarget;
 
-    private void Update()
+    private void OnEnable()
     {
-        HandleInput();
+        if (interactAction != null) interactAction.action.Enable();
     }
 
-    private void HandleInput()
+    private void OnDisable()
     {
-        var pointer = UnityEngine.InputSystem.Pointer.current;
+        if (interactAction != null) interactAction.action.Disable();
+    }
+
+    private void Update()
+    {
+        if (IsGamepadActive())
+            HandleGamepadInput();
+        else
+            HandlePointerInput();
+    }
+
+    // ─── Gamepad / Keyboard (FPS Mode) ────────────────────────────────────────
+
+    private void HandleGamepadInput()
+    {
+        if (interactAction == null) return;
+
+        // Gamepad / Keyboard: interact NGAY khi nhấn (instant press)
+        if (!interactAction.action.WasPressedThisFrame()) return;
+
+        // Raycast từ tâm màn hình (FPS crosshair)
+        Vector2 centerScreen = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+        FindTarget(centerScreen);
+
+        if (_currentTarget != null)
+        {
+            ITool currentTool = toolSelector.CurrentTool;
+            if (currentTool != null && currentTool.CanInteract(_currentTarget))
+            {
+                UpdateProgress(1f);
+                currentTool.Interact(_currentTarget);
+                OnInteractionComplete?.Invoke();
+            }
+        }
+
+        // Reset dù có interact hay không
+        ResetHold();
+    }
+
+    // ─── Touch / Mouse (Pointer Mode) ─────────────────────────────────────────
+
+    private void HandlePointerInput()
+    {
+        var pointer = Pointer.current;
         if (pointer == null) return;
 
         bool inputDown = pointer.press.wasPressedThisFrame;
         bool inputHeld = pointer.press.isPressed;
-        bool inputUp = pointer.press.wasReleasedThisFrame;
+        bool inputUp   = pointer.press.wasReleasedThisFrame;
         Vector2 currentPosition = pointer.position.ReadValue();
 
-        // Logic handling
         if (inputDown)
         {
             if (IsPointerOverUI())
-            {
                 return;
-            }
+
             _isHolding = true;
             _startTouchPosition = currentPosition;
             _holdTimer = 0f;
@@ -60,11 +106,8 @@ public class HoldInteraction : MonoBehaviour
                 return;
             }
 
-            // Raycast
             if (_currentTarget == null)
-            {
                 FindTarget(currentPosition);
-            }
 
             if (_currentTarget != null)
             {
@@ -91,6 +134,28 @@ public class HoldInteraction : MonoBehaviour
         {
             ResetHold();
         }
+    }
+
+    // ─── Helpers ──────────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Trả về true nếu thiết bị input hiện tại là Gamepad HOẶC Keyboard.
+    /// Cả hai đều dùng FPS mode (raycast từ tâm màn hình).
+    /// </summary>
+    private bool IsGamepadActive()
+    {
+        // Ưu tiên kiểm tra interactAction nếu có
+        if (interactAction != null && interactAction.action.activeControl != null)
+        {
+            var device = interactAction.action.activeControl.device;
+            return device is Gamepad || device is Keyboard;
+        }
+
+        // Fallback: kiểm tra thiết bị cuối cùng được dùng
+        if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame) return true;
+        if (Keyboard.current != null && Keyboard.current.wasUpdatedThisFrame) return true;
+
+        return false;
     }
 
     private void FindTarget(Vector2 screenPosition)
@@ -122,24 +187,20 @@ public class HoldInteraction : MonoBehaviour
         if (EventSystem.current == null) return false;
 
         PointerEventData eventData = new PointerEventData(EventSystem.current);
-        var pointer = UnityEngine.InputSystem.Pointer.current;
+        var pointer = Pointer.current;
         if (pointer != null)
-        {
             eventData.position = pointer.position.ReadValue();
-        }
-        
+
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
-        
+
         foreach (var result in results)
         {
             if (result.gameObject.GetComponent<TouchField>() != null)
-            {
                 continue;
-            }
             return true;
         }
-        
+
         return false;
     }
 }

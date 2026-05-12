@@ -10,6 +10,7 @@ public class ShopTrigger : MonoBehaviour
             // Open shop UI
             if (ShopUI.Instance != null)
             {
+                ShopUI.Instance.SetCanOpen(true);
                 ShopUI.Instance.ShowShopButton(true);
             }
         }
@@ -22,6 +23,7 @@ public class ShopTrigger : MonoBehaviour
             // Close shop UI
             if (ShopUI.Instance != null)
             {
+                ShopUI.Instance.SetCanOpen(false);
                 ShopUI.Instance.CloseShop(false);
             }
         }

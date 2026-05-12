@@ -73,6 +73,11 @@ public class InventoryGridUI : MonoBehaviour
         if (closeButton != null) closeButton.onClick.RemoveListener(CloseInventory);
     }
 
+    public bool IsInventoryOpen()
+    {
+        return inventoryPanel != null && inventoryPanel.activeSelf;
+    }
+
     public void OpenInventory()
     {
         if (inventoryPanel != null) inventoryPanel.SetActive(true);

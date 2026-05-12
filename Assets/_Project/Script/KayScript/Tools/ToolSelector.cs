@@ -10,7 +10,9 @@ public class ToolSelector : MonoBehaviour
 
     private int _currentIndex = 0;
 
-    public ITool CurrentTool => tools.Length > 0 ? tools[_currentIndex] as ITool : null;
+    public int CurrentToolIndex => _currentIndex;
+    public int ToolCount => tools != null ? tools.Length : 0;
+    public ITool CurrentTool => tools != null && tools.Length > 0 ? tools[_currentIndex] as ITool : null;
     public event Action<int> OnToolChanged;
     public event Action<int> OnToolUnlocked;
 

@@ -5847,6 +5847,7 @@ GameObject:
   - component: {fileID: 1254144123}
   - component: {fileID: 1254144122}
   - component: {fileID: 1254144121}
+  - component: {fileID: 1254144129}
   m_Layer: 0
   m_Name: CoresManager
   m_TagString: Untagged
@@ -5974,6 +5975,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1254144129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254144120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be8a065f59ff71943accb3724fca5a3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GamepadUIController
+  toggleInventoryAction: {fileID: -324854014829373340, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  toggleShopAction: {fileID: 8105538232903022157, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  shopBuyTabAction: {fileID: 2863500386753296647, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  shopSellTabAction: {fileID: 4553965570919709320, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  shopConfirmAction: {fileID: 4848607470254664612, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  shopSellAllAction: {fileID: -1787364557936296471, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  shopNavigateAction: {fileID: 7179421338378200973, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  nextToolAction: {fileID: -1051667563131306201, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  prevToolAction: {fileID: 1562708788343241558, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
+  inventoryGridUI: {fileID: 962608461}
+  shopUI: {fileID: 1978934063}
+  toolSelector: {fileID: 1488971270}
 --- !u!1 &1297218823
 GameObject:
   m_ObjectHideFlags: 0
@@ -8508,6 +8533,7 @@ MonoBehaviour:
     m_Bits: 64
   toolSelector: {fileID: 1488971270}
   playerCamera: {fileID: 722860345}
+  interactAction: {fileID: 6276339513826019528, guid: 4a23e7ea4c7aa35429d0b4bd3d27948e, type: 3}
 --- !u!114 &1873353078
 MonoBehaviour:
   m_ObjectHideFlags: 0

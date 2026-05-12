@@ -128,6 +128,18 @@ public class ShopItemUI : MonoBehaviour
         ShowFeedback(success);
     }
 
+    /// <summary>Gọi từ GamepadUIController để thực hiện mua/bán.</summary>
+    public void TriggerAction() => OnActionButtonClicked();
+
+    /// <summary>Bật/tắt highlight khi navigate bằng gamepad.</summary>
+    public void SetHighlight(bool highlighted)
+    {
+        if (bgImage == null) return;
+        bgImage.color = highlighted
+            ? new Color(1f, 0.85f, 0f, 0.5f)  // gold highlight
+            : defaultBgColor;
+    }
+
     private void ShowFeedback(bool success)
     {
         if (bgImage != null)
