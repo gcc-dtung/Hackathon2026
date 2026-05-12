@@ -7,17 +7,12 @@ public class OxygenBar : MonoBehaviour
     [SerializeField] private float baseDepletionRate = 10f;
     [SerializeField] private float reductionFactor = 0.15f; // How much each tree slows depletion
     [SerializeField] private Image oxygenBar;
-    [SerializeField] private GameOverUI gameOverUI;
 
     public event System.Action OnOxygenDepleted;
     public event System.Action<float, float> OnOxygenChanged;
 
     private float _oxygen;
 
-    void OnEnable()
-    {
-        OnOxygenDepleted += gameOverUI.ShowGameOver;
-    }
 
     void Start()
     {
@@ -46,6 +41,7 @@ public class OxygenBar : MonoBehaviour
 
         if (_oxygen <= 0)
         {
+            Debug.Log("Die");
             OnOxygenDepleted?.Invoke();
         }
     }
@@ -56,11 +52,6 @@ public class OxygenBar : MonoBehaviour
         {
             oxygenBar.fillAmount = _oxygen / maxOxygen;
         }
-    }
-
-    void OnDisable()
-    {
-        OnOxygenDepleted -= gameOverUI.ShowGameOver;
     }
 
     public void AddOxygen(float amount)

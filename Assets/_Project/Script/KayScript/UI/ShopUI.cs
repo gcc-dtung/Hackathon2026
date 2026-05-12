@@ -69,9 +69,9 @@ public class ShopUI : Singleton<ShopUI>
         ShowShopButton(false);
         SwitchTab(true); // Default to Buy tab
         
-        // Optionally pause game or lock cursor here
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        // // Optionally pause game or lock cursor here
+        // Cursor.lockState = CursorLockMode.None;
+        // Cursor.visible = true;
     }
 
     public void CloseShop(bool showButton = true)
@@ -88,8 +88,8 @@ public class ShopUI : Singleton<ShopUI>
             ShowShopButton(false);
         }
         
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
     }
 
     /// <summary>Switch tab từ GamepadUIController</summary>
