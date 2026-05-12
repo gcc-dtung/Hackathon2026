@@ -5959,7 +5959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 331da960ed653b54aa459c3108823cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Backpack
-  maxSlots: 20
+  maxSlots: 200000000
 --- !u!4 &1254144128
 Transform:
   m_ObjectHideFlags: 0

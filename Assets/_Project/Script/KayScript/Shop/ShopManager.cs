@@ -77,6 +77,10 @@ public class ShopManager : Singleton<ShopManager>
         SellAllOfType(ResourceType.Plastic, 1);
         SellAllOfType(ResourceType.Glass, 1);
         SellAllOfType(ResourceType.Can, 1);
+        
+        // Sell Wood and Stone
+        SellAllOfType(ResourceType.Wood, 1);
+        SellAllOfType(ResourceType.Stone, 1);
     }
     
     private void SellAllOfType(ResourceType type, int unitPrice)

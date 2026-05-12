@@ -37,6 +37,7 @@ public class Backpack : Singleton<Backpack>
             _items[type] = 0;
         }
         _items[type] += amount;
+        Debug.Log($"[Backpack] Added {amount}x {type}. New total: {_items[type]}. Backpack total: {TotalItemCount}/{maxSlots}. Listeners: {OnInventoryChanged?.GetInvocationList()?.Length ?? 0}");
         OnInventoryChanged?.Invoke(type, _items[type]);
         return true;
     }
