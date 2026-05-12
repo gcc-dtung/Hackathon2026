@@ -12,7 +12,11 @@ public class ToolbarUI : MonoBehaviour
 
     private void Start()
     {
-        if (toolSelector == null) return;
+        if (toolSelector == null)
+        {
+            Debug.LogError("[ToolbarUI] toolSelector reference is NULL! Assign it in Inspector.");
+            return;
+        }
 
         toolSelector.OnToolChanged += HandleToolChanged;
         toolSelector.OnToolUnlocked += HandleToolUnlocked;
@@ -20,7 +24,11 @@ public class ToolbarUI : MonoBehaviour
         for (int i = 0; i < toolButtons.Length; i++)
         {
             int index = i; // local copy for closure
-            toolButtons[i].onClick.AddListener(() => toolSelector.SelectTool(index));
+            toolButtons[i].onClick.AddListener(() =>
+            {
+                Debug.Log($"[ToolbarUI] Button {index} clicked!");
+                toolSelector.SelectTool(index);
+            });
         }
 
         // Init state
@@ -48,21 +56,26 @@ public class ToolbarUI : MonoBehaviour
 
     private void UpdateAllButtonsUI(int selectedIndex = -1)
     {
-        if (selectedIndex == -1 && toolSelector != null && toolSelector.CurrentTool != null)
+        if (toolSelector == null) return;
+        
+        if (selectedIndex == -1)
         {
-            // Simple way to get current index, though we don't have direct access.
-            // It's okay, we can just rely on the event or checking if we need to.
-            // For now, we will just update lock states if selectedIndex is not provided.
+            selectedIndex = toolSelector.CurrentToolIndex;
         }
 
         for (int i = 0; i < toolButtons.Length; i++)
         {
+            if (toolButtons[i] == null) continue;
+
+            bool isUnlocked = toolSelector.IsToolUnlocked(i);
+            bool isSelected = (i == selectedIndex);
+
+            // Disable button interaction cho tool bị lock
+            toolButtons[i].interactable = isUnlocked;
+
             Image bg = toolButtons[i].GetComponent<Image>();
             if (bg != null)
             {
-                bool isUnlocked = toolSelector.IsToolUnlocked(i);
-                bool isSelected = (i == selectedIndex);
-
                 if (!isUnlocked)
                 {
                     bg.color = lockedColor;

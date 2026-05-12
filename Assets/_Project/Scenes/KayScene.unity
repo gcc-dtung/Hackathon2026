@@ -7475,6 +7475,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mountain_L_09
       objectReference: {fileID: 0}
+    - target: {fileID: 7367783453760011872, guid: 2d2d9b35cc0121e4aa5e7bfd10395b1b, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7887052745661605082, guid: 2d2d9b35cc0121e4aa5e7bfd10395b1b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -89.5399
@@ -7816,6 +7820,10 @@ PrefabInstance:
     - target: {fileID: 846370637057016367, guid: 5d0798e61c7228c44aed0cf2cd5ad1cf, type: 3}
       propertyPath: m_Name
       value: Mountain_L_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 846370637057016367, guid: 5d0798e61c7228c44aed0cf2cd5ad1cf, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14256,7 +14264,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverUI
   gameOverPanel: {fileID: 722327422}
   retryButton: {fileID: 1330325537}
-  oxygenBar: {fileID: 0}
 --- !u!1001 &640502948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14704,6 +14711,10 @@ PrefabInstance:
     - target: {fileID: 5256357275554271989, guid: 7920bbaab270b2540bc37eedf3e7fdfd, type: 3}
       propertyPath: m_Name
       value: Mountain_L_08
+      objectReference: {fileID: 0}
+    - target: {fileID: 5256357275554271989, guid: 7920bbaab270b2540bc37eedf3e7fdfd, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18427,6 +18438,7 @@ GameObject:
   - component: {fileID: 834390232}
   - component: {fileID: 834390231}
   - component: {fileID: 834390230}
+  - component: {fileID: 834390239}
   m_Layer: 0
   m_Name: Player (1)
   m_TagString: Player
@@ -18628,6 +18640,22 @@ Transform:
   - {fileID: 929226085}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &834390239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834390229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 781f8da390dc19d428bb70faf2b492d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantedTree
+  growthTimeSeconds: 60
+  saplingScale: {x: 0.2, y: 0.2, z: 0.2}
+  matureScale: {x: 1, y: 1, z: 1}
+  maxHealth: 100
 --- !u!1001 &843604293
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55139,6 +55167,10 @@ PrefabInstance:
     - target: {fileID: 4152223655864536659, guid: 9a02c3dc34903e34ab6c887e58998d6d, type: 3}
       propertyPath: m_Name
       value: Mountain_L_04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152223655864536659, guid: 9a02c3dc34903e34ab6c887e58998d6d, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

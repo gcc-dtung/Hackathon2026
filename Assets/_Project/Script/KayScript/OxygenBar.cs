@@ -13,6 +13,13 @@ public class OxygenBar : MonoBehaviour
 
     private float _oxygen;
 
+    private System.Action _showGameOverAction;
+
+    private void OnEnable()
+    {
+        _showGameOverAction = GameOverUI.Instance.ShowGameOver;
+        OnOxygenDepleted += _showGameOverAction;
+    }
 
     void Start()
     {
@@ -51,6 +58,14 @@ public class OxygenBar : MonoBehaviour
         if (oxygenBar != null)
         {
             oxygenBar.fillAmount = _oxygen / maxOxygen;
+        }
+    }
+
+    void OnDisable()
+    {
+        if (_showGameOverAction != null)
+        {
+            OnOxygenDepleted -= _showGameOverAction;
         }
     }
 

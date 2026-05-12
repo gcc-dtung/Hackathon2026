@@ -139,8 +139,8 @@ public class HoldInteraction : MonoBehaviour
     // ─── Helpers ──────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Trả về true nếu thiết bị input hiện tại là Gamepad HOẶC Keyboard.
-    /// Cả hai đều dùng FPS mode (raycast từ tâm màn hình).
+    /// Trả về true nếu thiết bị input hiện tại là Gamepad.
+    /// Keyboard sẽ dùng pointer mode (cho phép click UI buttons).
     /// </summary>
     private bool IsGamepadActive()
     {
@@ -148,12 +148,11 @@ public class HoldInteraction : MonoBehaviour
         if (interactAction != null && interactAction.action.activeControl != null)
         {
             var device = interactAction.action.activeControl.device;
-            return device is Gamepad || device is Keyboard;
+            return device is Gamepad;
         }
 
-        // Fallback: kiểm tra thiết bị cuối cùng được dùng
+        // Fallback: chỉ kiểm tra Gamepad thực sự
         if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame) return true;
-        if (Keyboard.current != null && Keyboard.current.wasUpdatedThisFrame) return true;
 
         return false;
     }
