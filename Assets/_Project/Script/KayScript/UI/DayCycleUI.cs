@@ -20,7 +20,7 @@ public class DayCycleUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (DayCycleManager.Instance != null)
+        if (DayCycleManager.InstanceExists)
         {
             DayCycleManager.Instance.OnNewDay -= UpdateDayText;
             DayCycleManager.Instance.OnTimeChanged -= UpdateTimeProgress;

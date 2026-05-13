@@ -93,7 +93,7 @@ public class PlantedTree : MonoBehaviour, IHarvestable
 
     private void OnDestroy()
     {
-        if (TreeManager.Instance != null)
+        if (TreeManager.InstanceExists)
         {
             TreeManager.Instance.UnregisterTree(this);
         }

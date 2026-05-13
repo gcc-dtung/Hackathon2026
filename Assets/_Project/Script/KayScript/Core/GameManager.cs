@@ -67,6 +67,19 @@ public class GameManager : Singleton<GameManager>
     protected override void OnDestroy()
     {
         base.OnDestroy();
+        
+        // Cleanup event subscriptions to avoid dangling references
+        if (DayCycleManager.InstanceExists)
+        {
+            DayCycleManager.Instance.OnFinalDayEnd -= TriggerVictory;
+        }
+
+        var playerHealth = FindFirstObjectByType<PlayerHealth>();
+        if (playerHealth != null)
+        {
+            playerHealth.OnPlayerDied -= TriggerGameOver;
+        }
+
         Time.timeScale = 1f; // Reset time scale on destroy to avoid freezing next loaded scene
     }
 }

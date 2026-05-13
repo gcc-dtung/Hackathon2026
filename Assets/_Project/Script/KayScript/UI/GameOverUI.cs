@@ -55,6 +55,8 @@ public class GameOverUI : Singleton<GameOverUI>
 
     private void RestartGame()
     {
+        // Reset time scale to 1f before reloading the scene
+        Time.timeScale = 1f;
         // Reload the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

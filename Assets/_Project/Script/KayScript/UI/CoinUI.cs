@@ -7,7 +7,7 @@ public class CoinUI : MonoBehaviour
 
     private void Start()
     {
-        if (CurrencyManager.Instance != null)
+        if (CurrencyManager.InstanceExists)
         {
             CurrencyManager.Instance.OnCoinsChanged += UpdateCoinText;
             UpdateCoinText(CurrencyManager.Instance.Coins);
@@ -16,7 +16,7 @@ public class CoinUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (CurrencyManager.Instance != null)
+        if (CurrencyManager.InstanceExists)
         {
             CurrencyManager.Instance.OnCoinsChanged -= UpdateCoinText;
         }

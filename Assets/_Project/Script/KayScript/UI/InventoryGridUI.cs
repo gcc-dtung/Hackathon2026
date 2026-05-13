@@ -80,7 +80,7 @@ public class InventoryGridUI : MonoBehaviour
 
     private void SubscribeToBackpack()
     {
-        if (_isSubscribed || Backpack.Instance == null) return;
+        if (_isSubscribed || !Backpack.InstanceExists) return;
 
         Backpack.Instance.OnInventoryChanged += HandleInventoryChanged;
         _isSubscribed = true;
@@ -88,7 +88,7 @@ public class InventoryGridUI : MonoBehaviour
 
     private void UnsubscribeFromBackpack()
     {
-        if (!_isSubscribed || Backpack.Instance == null) return;
+        if (!_isSubscribed || !Backpack.InstanceExists) return;
 
         Backpack.Instance.OnInventoryChanged -= HandleInventoryChanged;
         _isSubscribed = false;

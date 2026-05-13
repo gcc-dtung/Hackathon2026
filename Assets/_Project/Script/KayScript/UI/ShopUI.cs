@@ -29,7 +29,7 @@ public class ShopUI : Singleton<ShopUI>
 
     private void Start()
     {
-        if (CurrencyManager.Instance != null)
+        if (CurrencyManager.InstanceExists)
         {
             CurrencyManager.Instance.OnCoinsChanged += UpdateCoinText;
             UpdateCoinText(CurrencyManager.Instance.Coins);
@@ -59,7 +59,7 @@ public class ShopUI : Singleton<ShopUI>
     {
         base.OnDestroy();
 
-        if (CurrencyManager.Instance != null)
+        if (CurrencyManager.InstanceExists)
         {
             CurrencyManager.Instance.OnCoinsChanged -= UpdateCoinText;
         }
@@ -81,7 +81,7 @@ public class ShopUI : Singleton<ShopUI>
         ShowShopButton(false);
         SwitchTab(true); // Default to Buy tab
         PopulateShop();
-        if (CurrencyManager.Instance != null) UpdateCoinText(CurrencyManager.Instance.Coins);
+        if (CurrencyManager.InstanceExists) UpdateCoinText(CurrencyManager.Instance.Coins);
         
         // // Optionally pause game or lock cursor here
         // Cursor.lockState = CursorLockMode.None;

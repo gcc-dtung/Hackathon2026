@@ -22,7 +22,7 @@ public class WeatherUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (WeatherManager.Instance != null)
+        if (WeatherManager.InstanceExists)
         {
             WeatherManager.Instance.OnWeatherStart -= ShowWeatherWarning;
             WeatherManager.Instance.OnWeatherEnd -= HideWeatherWarning;

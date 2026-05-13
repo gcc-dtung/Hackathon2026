@@ -129,7 +129,7 @@ public class ShopItemUI : MonoBehaviour
 
     private void OnActionButtonClicked()
     {
-        if (_itemData == null || ShopManager.Instance == null) return;
+        if (_itemData == null || !ShopManager.InstanceExists) return;
 
         bool success = false;
 
@@ -180,7 +180,7 @@ public class ShopItemUI : MonoBehaviour
     private void SubscribeToBackpack()
     {
         if (_isSubscribedToBackpack || _itemData == null || _itemData.action != ShopAction.Sell) return;
-        if (Backpack.Instance == null) return;
+        if (!Backpack.InstanceExists) return;
 
         Backpack.Instance.OnInventoryChanged += HandleInventoryChanged;
         _isSubscribedToBackpack = true;
@@ -188,7 +188,7 @@ public class ShopItemUI : MonoBehaviour
 
     private void UnsubscribeFromBackpack()
     {
-        if (!_isSubscribedToBackpack || Backpack.Instance == null) return;
+        if (!_isSubscribedToBackpack || !Backpack.InstanceExists) return;
 
         Backpack.Instance.OnInventoryChanged -= HandleInventoryChanged;
         _isSubscribedToBackpack = false;
@@ -212,7 +212,7 @@ public class ShopItemUI : MonoBehaviour
 
     private string GetDisplayName()
     {
-        if (ShopManager.Instance == null)
+        if (!ShopManager.InstanceExists)
         {
             return _itemData.itemName;
         }

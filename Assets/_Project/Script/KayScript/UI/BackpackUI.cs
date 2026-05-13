@@ -17,7 +17,7 @@ public class BackpackUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (Backpack.Instance != null)
+        if (Backpack.InstanceExists)
         {
             Backpack.Instance.OnInventoryChanged -= HandleInventoryChanged;
         }

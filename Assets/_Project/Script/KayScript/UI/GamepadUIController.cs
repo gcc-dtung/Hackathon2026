@@ -186,7 +186,7 @@ public class GamepadUIController : MonoBehaviour
         if (shopUI == null || !shopUI.IsShopOpen()) return;
         if (shopSellAllAction == null) return;
         if (!shopSellAllAction.action.WasPressedThisFrame()) return;
-        if (ShopManager.Instance == null) return;
+        if (!ShopManager.InstanceExists) return;
 
         // Chỉ cho phép bán nhanh nếu đang ở tab Sell
         if (!_isBuyTab)

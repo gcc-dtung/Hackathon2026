@@ -24,7 +24,7 @@ public class WeatherManager : Singleton<WeatherManager>
     {
         base.OnDestroy();
 
-        if (DayCycleManager.Instance != null)
+        if (DayCycleManager.InstanceExists)
         {
             DayCycleManager.Instance.OnNewDay -= HandleNewDay;
         }

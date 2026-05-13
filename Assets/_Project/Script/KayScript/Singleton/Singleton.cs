@@ -5,6 +5,15 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     private static T _instance;
     private static bool _isQuitting = false;
 
+    public static bool InstanceExists => _instance != null && !_isQuitting;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        _instance = null;
+        _isQuitting = false;
+    }
+
     public static T Instance
     {
         get
@@ -17,13 +26,6 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             if (_instance == null)
             {
                 _instance = FindFirstObjectByType<T>();
-
-                if (_instance == null)
-                {
-                    GameObject singletonObject = new GameObject();
-                    _instance = singletonObject.AddComponent<T>();
-                    singletonObject.name = typeof(T).ToString() + " (Singleton)";
-                }
             }
             return _instance;
         }
@@ -50,7 +52,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         if (_instance == this)
         {
-            _isQuitting = true;
+            _instance = null;
         }
     }
 }
