@@ -7,6 +7,20 @@ public class GameOverUI : Singleton<GameOverUI>
 {
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private Button retryButton;
+    [SerializeField] private OxygenBar oxygenBar;
+
+    void OnEnable()
+    {
+        if (oxygenBar == null)
+        {
+            oxygenBar = FindFirstObjectByType<OxygenBar>();
+        }
+
+        if (oxygenBar != null)
+        {
+            oxygenBar.OnOxygenDepleted += ShowGameOver;
+        }
+    }
 
     private void Start()
     {
@@ -20,7 +34,13 @@ public class GameOverUI : Singleton<GameOverUI>
             retryButton.onClick.AddListener(RestartGame);
         }
     }
-
+    void OnDisable()
+    {
+        if (oxygenBar != null)
+        {
+            oxygenBar.OnOxygenDepleted -= ShowGameOver;
+        }
+    }
 
     public void ShowGameOver()
     {

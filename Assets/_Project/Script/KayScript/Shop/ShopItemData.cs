@@ -21,6 +21,7 @@ public class ShopItemData : ScriptableObject
     public int price;
     public ShopAction action;
     public ItemCategory category;
+    public int purchaseLimit;
     
     // For resources/consumables
     public ResourceType resourceType;

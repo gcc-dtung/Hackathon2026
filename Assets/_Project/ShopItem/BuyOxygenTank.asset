@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: BuyOxygenTank
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemData
   itemName: Oxygen Tank
-  icon: {fileID: 0}
-  price: 20
+  icon: {fileID: 21300000, guid: 70be74654f7eded4e9748e1da7475f82, type: 3}
+  price: 5
   action: 0
   category: 1
+  purchaseLimit: 0
   resourceType: 8
   toolIndex: 0

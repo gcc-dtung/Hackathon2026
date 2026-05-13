@@ -7,6 +7,7 @@ public class ShopItemUI : MonoBehaviour
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI priceText;
+    [SerializeField] private TextMeshProUGUI ownedCountText;
     [SerializeField] private Button actionButton;
     [SerializeField] private TextMeshProUGUI buttonText;
     [SerializeField] private Image bgImage;
@@ -15,6 +16,7 @@ public class ShopItemUI : MonoBehaviour
     [SerializeField] private Color failColor = new Color(0.8f, 0f, 0f, 0.5f);
 
     private ShopItemData _itemData;
+    private bool _isSubscribedToBackpack;
 
     private void Awake()
     {
@@ -78,6 +80,14 @@ public class ShopItemUI : MonoBehaviour
             le.minWidth = 120f;
         }
 
+        if (ownedCountText != null && ownedCountText.gameObject != gameObject)
+        {
+            ownedCountText.transform.SetAsLastSibling();
+            var le = ownedCountText.gameObject.GetComponent<LayoutElement>();
+            if (le == null) le = ownedCountText.gameObject.AddComponent<LayoutElement>();
+            le.minWidth = 120f;
+        }
+
         if (actionButton != null && actionButton.gameObject != gameObject)
         {
             actionButton.transform.SetAsLastSibling();
@@ -91,10 +101,10 @@ public class ShopItemUI : MonoBehaviour
     public void SetItem(ShopItemData itemData)
     {
         _itemData = itemData;
+        ResetTextDirection();
 
         if (iconImage != null && itemData.icon != null) iconImage.sprite = itemData.icon;
-        if (nameText != null) nameText.text = itemData.itemName;
-        if (priceText != null) priceText.text = $"{itemData.price} Coins";
+        UpdateItemText();
         
         if (buttonText != null)
         {
@@ -108,6 +118,13 @@ public class ShopItemUI : MonoBehaviour
             actionButton.onClick.RemoveAllListeners();
             actionButton.onClick.AddListener(OnActionButtonClicked);
         }
+
+        SubscribeToBackpack();
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeFromBackpack();
     }
 
     private void OnActionButtonClicked()
@@ -126,12 +143,94 @@ public class ShopItemUI : MonoBehaviour
         }
 
         ShowFeedback(success);
+        if (success)
+        {
+            UpdateItemText();
+        }
     }
 
-    /// <summary>Gọi từ GamepadUIController để thực hiện mua/bán.</summary>
+    private void UpdateItemText()
+    {
+        if (_itemData == null) return;
+
+        if (nameText != null)
+        {
+            nameText.text = GetDisplayName();
+        }
+
+        if (priceText != null)
+        {
+            priceText.text = _itemData.price.ToString();
+        }
+
+        UpdateOwnedCountText();
+    }
+
+    private void UpdateOwnedCountText()
+    {
+        if (ownedCountText == null || _itemData == null) return;
+
+        bool shouldShow = _itemData.action == ShopAction.Sell && Backpack.Instance != null;
+        ownedCountText.gameObject.SetActive(shouldShow);
+        if (!shouldShow) return;
+
+        ownedCountText.text = $"Owned: {Backpack.Instance.GetItemCount(_itemData.resourceType)}";
+    }
+
+    private void SubscribeToBackpack()
+    {
+        if (_isSubscribedToBackpack || _itemData == null || _itemData.action != ShopAction.Sell) return;
+        if (Backpack.Instance == null) return;
+
+        Backpack.Instance.OnInventoryChanged += HandleInventoryChanged;
+        _isSubscribedToBackpack = true;
+    }
+
+    private void UnsubscribeFromBackpack()
+    {
+        if (!_isSubscribedToBackpack || Backpack.Instance == null) return;
+
+        Backpack.Instance.OnInventoryChanged -= HandleInventoryChanged;
+        _isSubscribedToBackpack = false;
+    }
+
+    private void HandleInventoryChanged(ResourceType type, int count)
+    {
+        if (_itemData == null || type != _itemData.resourceType) return;
+        UpdateOwnedCountText();
+    }
+
+    private void ResetTextDirection()
+    {
+        TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>(true);
+        foreach (TextMeshProUGUI text in texts)
+        {
+            text.isRightToLeftText = false;
+            text.rectTransform.localRotation = Quaternion.identity;
+        }
+    }
+
+    private string GetDisplayName()
+    {
+        if (ShopManager.Instance == null)
+        {
+            return _itemData.itemName;
+        }
+
+        int purchaseLimit = ShopManager.Instance.GetToolPurchaseLimit(_itemData);
+        if (purchaseLimit <= 0)
+        {
+            return _itemData.itemName;
+        }
+
+        int ownedCount = ShopManager.Instance.GetOwnedItemCount(_itemData);
+        return $"{_itemData.itemName} ({ownedCount}/{purchaseLimit})";
+    }
+
+    /// <summary>Called by GamepadUIController to buy or sell the selected item.</summary>
     public void TriggerAction() => OnActionButtonClicked();
 
-    /// <summary>Bật/tắt highlight khi navigate bằng gamepad.</summary>
+    /// <summary>Turns highlight on or off during gamepad navigation.</summary>
     public void SetHighlight(bool highlighted)
     {
         if (bgImage == null) return;
