@@ -37,9 +37,17 @@ public class SeedPlacer : MonoBehaviour
         return UnityEngine.InputSystem.Gamepad.current != null && UnityEngine.InputSystem.Gamepad.current.wasUpdatedThisFrame;
     }
 
+    [SerializeField] private float dragThreshold = 10f;
+    private Vector2 _startPointerPosition;
+    private bool _isPointerDown = false;
+
     private void Update()
     {
-        if (!_isPlantingMode) return;
+        if (!_isPlantingMode) 
+        {
+            _isPointerDown = false;
+            return;
+        }
 
         // Gamepad/Keyboard: raycast từ tâm màn hình
         if (IsGamepadActive() || UnityEngine.InputSystem.Keyboard.current != null)
@@ -53,17 +61,34 @@ public class SeedPlacer : MonoBehaviour
             }
         }
 
-        // Simple tap to plant, checking if we hold seed
+        // Pointer (Touch/Mouse) logic with drag protection
         var pointer = UnityEngine.InputSystem.Pointer.current;
-        if (pointer != null && pointer.press.wasPressedThisFrame)
-        {
-            // Bỏ qua nếu nhấn vào UI thật (nút bấm, menu), nhưng cho phép nếu nhấn vào vùng xoay camera (TouchField)
-            if (IsPointerOverUI())
-            {
-                return;
-            }
+        if (pointer == null) return;
 
-            TryPlantSeed(pointer.position.ReadValue());
+        Vector2 currentPosition = pointer.position.ReadValue();
+        bool inputDown = pointer.press.wasPressedThisFrame;
+        bool inputHeld = pointer.press.isPressed;
+        bool inputUp = pointer.press.wasReleasedThisFrame;
+
+        if (inputDown)
+        {
+            if (IsPointerOverUI()) return;
+            
+            _isPointerDown = true;
+            _startPointerPosition = currentPosition;
+        }
+        else if (inputHeld && _isPointerDown)
+        {
+            // Nếu di chuyển quá ngưỡng (đang xoay camera) thì hủy lệnh trồng cây
+            if (Vector2.Distance(_startPointerPosition, currentPosition) > dragThreshold)
+            {
+                _isPointerDown = false;
+            }
+        }
+        else if (inputUp && _isPointerDown)
+        {
+            _isPointerDown = false;
+            TryPlantSeed(currentPosition);
         }
     }
 
@@ -81,11 +106,9 @@ public class SeedPlacer : MonoBehaviour
 
         foreach (var result in results)
         {
-            // Nếu nhấn vào vùng xoay camera thì KHÔNG coi là bị chặn UI
             if (result.gameObject.GetComponent<TouchField>() != null)
                 continue;
             
-            // Các thành phần UI khác (Button, Panel...) thì vẫn chặn
             return true;
         }
 

@@ -1121,9 +1121,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 893116223}
   - {fileID: 2108420256}
   - {fileID: 189152302}
-  - {fileID: 893116223}
   - {fileID: 1354523046}
   - {fileID: 737188742}
   - {fileID: 755597247}
@@ -10474,7 +10474,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 8587509}
+  m_AnchoredPosition: {x: 0, y: 8729465}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &564892672
@@ -14284,7 +14284,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &722327423
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16150,7 +16150,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 8531088}
+  m_AnchoredPosition: {x: 0, y: 8673044}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &847036235
@@ -19590,6 +19590,7 @@ GameObject:
   - component: {fileID: 1057303468}
   - component: {fileID: 1057303467}
   - component: {fileID: 1057303466}
+  - component: {fileID: 1057303469}
   m_Layer: 5
   m_Name: Plant Tree
   m_TagString: Untagged
@@ -19660,7 +19661,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1057303467}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1873353080}
+        m_TargetAssemblyTypeName: SeedPlacer, Assembly-CSharp
+        m_MethodName: TogglePlantingMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1057303467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19699,6 +19712,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057303464}
   m_CullTransparentMesh: 1
+--- !u!114 &1057303469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057303464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd685fecd216bf4dbf91df35b8e009d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlantingButtonUI
+  seedPlacer: {fileID: 1873353080}
+  buttonImage: {fileID: 1057303467}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  activeColor: {r: 0.2981131, g: 0.2981131, b: 0.2981131, a: 1}
 --- !u!1001 &1060783037
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23158,7 +23187,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -19, y: 0}
-  m_SizeDelta: {x: 0, y: 50}
+  m_SizeDelta: {x: 349.17, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1234445158
 MonoBehaviour:
@@ -35207,6 +35236,7 @@ GameObject:
   - component: {fileID: 1873353077}
   - component: {fileID: 1873353079}
   - component: {fileID: 1873353078}
+  - component: {fileID: 1873353080}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -35373,7 +35403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f08f5630f61dcd48850a9e29566bbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KayScript.Interaction.HoldInteraction
-  holdDuration: 1.5
+  holdDuration: 0.7
   interactRange: 3
   interactRadius: 0.2
   pointerInteractRadius: 0.4
@@ -35414,6 +35444,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   oxygenBar: {fileID: 502768587}
+--- !u!114 &1873353080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873353068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed2ba5266f98e245a80b0a13a233f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeedPlacer
+  treePrefab: {fileID: 8161097321360391514, guid: 4d7e282ce7f88b64bb0b6735a293b1b5, type: 3}
+  playerCamera: {fileID: 1167826896}
+  placeRange: 4
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  dragThreshold: 10
 --- !u!1 &1884861366
 GameObject:
   m_ObjectHideFlags: 0
