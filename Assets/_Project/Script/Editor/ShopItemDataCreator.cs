@@ -17,10 +17,10 @@ public class ShopItemDataCreator
         }
 
         // Tab Buy
-        CreateItem("BuyAxe", "Axe", ShopAction.Buy, ItemCategory.Tool, default, 1, 50, 1);
-        CreateItem("BuyShovel", "Shovel", ShopAction.Buy, ItemCategory.Tool, default, 2, 50, 1);
+        CreateItem("BuyAxe", "Axe", ShopAction.Buy, ItemCategory.Tool, default, 1, 15, 1);
+        CreateItem("BuyShovel", "Shovel", ShopAction.Buy, ItemCategory.Tool, default, 2, 20, 1);
         CreateItem("BuySeed", "Seed", ShopAction.Buy, ItemCategory.Consumable, ResourceType.Seed, 0, 10, 0);
-        CreateItem("BuyOxygenTank", "Oxygen Tank", ShopAction.Buy, ItemCategory.Consumable, ResourceType.OxygenTank, 0, 20, 0);
+        CreateItem("BuyOxygenTank", "Oxygen Tank", ShopAction.Buy, ItemCategory.Consumable, ResourceType.OxygenTank, 0, 5, 0);
 
         // Tab Sell
         CreateItem("SellSteel", "Steel", ShopAction.Sell, ItemCategory.Resource, ResourceType.Steel, 0, 1, 0);

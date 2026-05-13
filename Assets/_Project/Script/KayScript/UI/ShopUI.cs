@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ShopUI : Singleton<ShopUI>
 {
@@ -13,6 +14,7 @@ public class ShopUI : Singleton<ShopUI>
     [SerializeField] private Button openShopButton;
     [SerializeField] private Button closeShopButton;
     [SerializeField] private Button sellAllTrashButton; // NEW
+    [SerializeField] private TextMeshProUGUI coinText;
     
     [Header("Tabs")]
     [SerializeField] private Button buyTabButton;
@@ -25,14 +27,19 @@ public class ShopUI : Singleton<ShopUI>
     [SerializeField] private Transform buyContentTransform;
     [SerializeField] private Transform sellContentTransform;
 
-    private bool _isPopulated = false;
-
     private void Start()
     {
+        if (CurrencyManager.Instance != null)
+        {
+            CurrencyManager.Instance.OnCoinsChanged += UpdateCoinText;
+            UpdateCoinText(CurrencyManager.Instance.Coins);
+        }
+
         if (shopPanel != null) shopPanel.SetActive(false);
         if (openShopButton != null)
         {
             openShopButton.gameObject.SetActive(false);
+            openShopButton.onClick.RemoveListener(OpenShop);
             openShopButton.onClick.AddListener(OpenShop);
         }
         if (closeShopButton != null) closeShopButton.onClick.AddListener(() => CloseShop(true));
@@ -48,6 +55,16 @@ public class ShopUI : Singleton<ShopUI>
         }
     }
 
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+
+        if (CurrencyManager.Instance != null)
+        {
+            CurrencyManager.Instance.OnCoinsChanged -= UpdateCoinText;
+        }
+    }
+
     public bool IsShopOpen() => _isShopOpen;
     public bool CanOpen() => _canOpen;
     public void SetCanOpen(bool value) => _canOpen = value;
@@ -59,16 +76,24 @@ public class ShopUI : Singleton<ShopUI>
 
     public void OpenShop()
     {
-        PopulateShop();
-
         _isShopOpen = true;
         if (shopPanel != null) shopPanel.SetActive(true);
         ShowShopButton(false);
         SwitchTab(true); // Default to Buy tab
+        PopulateShop();
+        if (CurrencyManager.Instance != null) UpdateCoinText(CurrencyManager.Instance.Coins);
         
         // // Optionally pause game or lock cursor here
         // Cursor.lockState = CursorLockMode.None;
         // Cursor.visible = true;
+    }
+
+    private void UpdateCoinText(int currentCoins)
+    {
+        if (coinText != null)
+        {
+            coinText.text = currentCoins.ToString();
+        }
     }
 
     public void CloseShop(bool showButton = true)
@@ -139,8 +164,6 @@ public class ShopUI : Singleton<ShopUI>
                 newItem.transform.localScale = Vector3.one;
             }
         }
-
-        _isPopulated = true;
     }
 
     private void SetupLayout(Transform panelTransform)

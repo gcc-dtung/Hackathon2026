@@ -8,6 +8,8 @@ public class HoldInteraction : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float holdDuration = 1.5f;
     [SerializeField] private float interactRange = 3f;
+    [SerializeField] private float interactRadius = 0.2f;
+    [SerializeField] private float pointerInteractRadius = 0.5f;
     [SerializeField] private float dragThreshold = 10f; // in pixels
 
     [SerializeField] private LayerMask interactableLayer;
@@ -56,7 +58,7 @@ public class HoldInteraction : MonoBehaviour
 
         // Raycast từ tâm màn hình (FPS crosshair)
         Vector2 centerScreen = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-        FindTarget(centerScreen);
+        FindTarget(centerScreen, interactRadius);
 
         if (_currentTarget != null)
         {
@@ -107,7 +109,7 @@ public class HoldInteraction : MonoBehaviour
             }
 
             if (_currentTarget == null)
-                FindTarget(currentPosition);
+                FindTarget(currentPosition, pointerInteractRadius);
 
             if (_currentTarget != null)
             {
@@ -158,12 +160,12 @@ public class HoldInteraction : MonoBehaviour
         return false;
     }
 
-    private void FindTarget(Vector2 screenPosition)
+    private void FindTarget(Vector2 screenPosition, float radius)
     {
         if (playerCamera == null) return;
 
         Ray ray = playerCamera.ScreenPointToRay(screenPosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactableLayer))
+        if (Physics.SphereCast(ray, radius, out RaycastHit hit, interactRange, interactableLayer))
         {
             _currentTarget = hit.collider.GetComponentInParent<IHarvestable>();
         }

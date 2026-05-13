@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemData
   itemName: Shovel
   icon: {fileID: 0}
-  price: 50
+  price: 20
   action: 0
   category: 2
   purchaseLimit: 1

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemData
   itemName: Oxygen Tank
   icon: {fileID: 0}
-  price: 20
+  price: 5
   action: 0
   category: 1
   purchaseLimit: 0
