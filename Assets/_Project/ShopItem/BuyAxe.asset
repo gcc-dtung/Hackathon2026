@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BuyAxe
   m_EditorClassIdentifier: Assembly-CSharp::ShopItemData
   itemName: Axe
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 46ff23c770235e347b8baacd175a4add, type: 3}
   price: 15
   action: 0
   category: 2

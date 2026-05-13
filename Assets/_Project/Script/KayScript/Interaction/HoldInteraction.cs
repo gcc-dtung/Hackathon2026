@@ -21,6 +21,11 @@ public class HoldInteraction : MonoBehaviour
     [Header("Input Reference")]
     [SerializeField] private InputActionReference interactAction;
 
+    [Header("Debug")]
+    [SerializeField] private bool showPointerRayGizmo = true;
+    [SerializeField] private Color pointerRayColor = Color.cyan;
+    [SerializeField] private Color pointerHitColor = Color.yellow;
+
     public event System.Action<float> OnHoldProgress;
     public event System.Action OnInteractionComplete;
 
@@ -28,6 +33,12 @@ public class HoldInteraction : MonoBehaviour
     private bool _isHolding = false;
     private Vector2 _startTouchPosition;
     private IHarvestable _currentTarget;
+    private Ray _lastPointerRay;
+    private Vector3 _lastPointerRayEnd;
+    private Vector3 _lastPointerHitPoint;
+    private float _lastPointerRadius;
+    private bool _hasPointerRay;
+    private bool _hasPointerHit;
 
     private void OnEnable()
     {
@@ -109,7 +120,7 @@ public class HoldInteraction : MonoBehaviour
             }
 
             if (_currentTarget == null)
-                FindTarget(currentPosition, pointerInteractRadius);
+                FindTarget(currentPosition, pointerInteractRadius, true);
 
             if (_currentTarget != null)
             {
@@ -160,7 +171,7 @@ public class HoldInteraction : MonoBehaviour
         return false;
     }
 
-    private void FindTarget(Vector2 screenPosition, float radius)
+    private void FindTarget(Vector2 screenPosition, float radius, bool isPointerInput = false)
     {
         if (playerCamera == null) return;
 
@@ -168,7 +179,35 @@ public class HoldInteraction : MonoBehaviour
         if (Physics.SphereCast(ray, radius, out RaycastHit hit, interactRange, interactableLayer))
         {
             _currentTarget = hit.collider.GetComponentInParent<IHarvestable>();
+            CachePointerGizmo(isPointerInput, ray, hit.point, radius, true);
         }
+        else
+        {
+            CachePointerGizmo(isPointerInput, ray, ray.origin + ray.direction * interactRange, radius, false);
+        }
+    }
+
+    private void CachePointerGizmo(bool isPointerInput, Ray ray, Vector3 endPoint, float radius, bool hasHit)
+    {
+        if (!isPointerInput) return;
+
+        _lastPointerRay = ray;
+        _lastPointerRayEnd = endPoint;
+        _lastPointerHitPoint = endPoint;
+        _lastPointerRadius = radius;
+        _hasPointerRay = true;
+        _hasPointerHit = hasHit;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (!showPointerRayGizmo || !_hasPointerRay) return;
+
+        Gizmos.color = pointerRayColor;
+        Gizmos.DrawLine(_lastPointerRay.origin, _lastPointerRayEnd);
+
+        Gizmos.color = _hasPointerHit ? pointerHitColor : pointerRayColor;
+        Gizmos.DrawWireSphere(_lastPointerHitPoint, _lastPointerRadius);
     }
 
     private void ResetHold()
