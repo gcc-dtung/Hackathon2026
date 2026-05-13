@@ -57,14 +57,39 @@ public class SeedPlacer : MonoBehaviour
         var pointer = UnityEngine.InputSystem.Pointer.current;
         if (pointer != null && pointer.press.wasPressedThisFrame)
         {
-            // Ignore UI touches
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            // Bỏ qua nếu nhấn vào UI thật (nút bấm, menu), nhưng cho phép nếu nhấn vào vùng xoay camera (TouchField)
+            if (IsPointerOverUI())
             {
                 return;
             }
 
             TryPlantSeed(pointer.position.ReadValue());
         }
+    }
+
+    private bool IsPointerOverUI()
+    {
+        if (EventSystem.current == null) return false;
+
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        var pointer = UnityEngine.InputSystem.Pointer.current;
+        if (pointer != null)
+            eventData.position = pointer.position.ReadValue();
+
+        System.Collections.Generic.List<RaycastResult> results = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var result in results)
+        {
+            // Nếu nhấn vào vùng xoay camera thì KHÔNG coi là bị chặn UI
+            if (result.gameObject.GetComponent<TouchField>() != null)
+                continue;
+            
+            // Các thành phần UI khác (Button, Panel...) thì vẫn chặn
+            return true;
+        }
+
+        return false;
     }
 
     private void TryPlantSeed(Vector2 screenPos)
